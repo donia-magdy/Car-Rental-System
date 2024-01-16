@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Rental Website</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+    <script src="jquery.min.js"></script>
+    <script>
+      function validateForm1() {
+        var email = document.forms["form1"]["email"].value;
+        var password = document.forms["form1"]["pass"].value;
+        var isValid = true;
+        document.getElementById("emailError").innerHTML = "";
+        document.getElementById("passwordError").innerHTML = "";
+
+        var emailvalid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        if (email.search(emailvalid) == -1) {
+          document.getElementById("emailError").innerHTML =
+            "Enter a valid email address";
+          isValid = false;
+        }
+        if (email == null || email == "") {
+          document.getElementById("emailError").innerHTML =
+            "Please fill out email field";
+          isValid = false;
+        }
+
+        if (password == null || password == "") {
+          document.getElementById("passwordError").innerHTML =
+            "Please fill out password field.";
+          isValid = false;
+        }
+        return isValid;
+      }
+      function validateForm2() {
+        var fname = document.forms["form2"]["fname"].value;
+        var lname = document.forms["form2"]["lname"].value;
+        var email = document.forms["form2"]["email"].value;
+        var phone = document.forms["form2"]["phone"].value;
+        var password = document.forms["form2"]["pass"].value;
+        var conpassword = document.forms["form2"]["conpass"].value;
+        var isValid = true;
+        document.getElementById("fnameError").innerHTML = "";
+        document.getElementById("lnameError").innerHTML = "";
+        document.getElementById("emailError2").innerHTML = "";
+        document.getElementById("phoneError").innerHTML = "";
+        document.getElementById("passwordError2").innerHTML = "";
+        document.getElementById("conpasswordError").innerHTML = "";
+        if (fname == null || fname == "") {
+          document.getElementById("fnameError").innerHTML =
+            "Please fill out first name field";
+          isValid = false;
+        }
+        if (lname == null || lname == "") {
+          document.getElementById("lnameError").innerHTML =
+            "Please fill out last name field";
+          isValid = false;
+        }
+        var emailvalid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        if (email.search(emailvalid) == -1) {
+          document.getElementById("emailError2").innerHTML =
+            "Enter a valid email address";
+          isValid = false;
+        }
+        if (email == null || email == "") {
+          document.getElementById("emailError2").innerHTML =
+            "Please fill out email field";
+          isValid = false;
+        }
+
+        if (phone == null || phone == "") {
+          document.getElementById("phoneError").innerHTML =
+            "Please fill out phone field.";
+          isValid = false;
+        }
+        if (password == null || password == "") {
+          document.getElementById("passwordError2").innerHTML =
+            "Please fill out password field.";
+          isValid = false;
+        }
+        if (password != conpassword) {
+          document.getElementById("conpasswordError").innerHTML =
+            "Password and confirm password fields must be the same.";
+          isValid = false;
+        }
+        if (conpassword == null || conpassword == "") {
+          document.getElementById("conpasswordError").innerHTML =
+            "Please fill out confirm password field.";
+          isValid = false;
+        }
+
+        return isValid;
+      }
+      function toggleForm(formId) {
+        var form = document.getElementById(formId);
+        var form1Button = document.getElementById("button1");
+        var form2Button = document.getElementById("button2");
+        if (formId === "form1") {
+          form1Button.classList.add("active");
+          form2Button.classList.remove("active");
+        } else if (formId === "form2") {
+          form1Button.classList.remove("active");
+          form2Button.classList.add("active");
+        }
+        form.classList.add("active");
+        var otherFormId = formId === "form1" ? "form2" : "form1";
+        document.getElementById(otherFormId).classList.remove("active");
+      }
+      $(document).ready(function () {
+        $("#form1").submit(function (event) {
+          event.preventDefault();
+          if (validateForm1()) {
+            var formData = $(this).serialize();
+
+            $.ajax({
+              type: "POST",
+              url: "login.php",
+              data: formData,
+              success: function (response) {
+                $("#result1").html(response);
+              },
+            });
+          }
+        });
+      });
+      $(document).ready(function () {
+        $("#form2").submit(function (event) {
+          event.preventDefault();
+          if (validateForm2()) {
+            var formData = $(this).serialize();
+
+            $.ajax({
+              type: "POST",
+              url: "login.php",
+              data: formData,
+              success: function (response) {
+                $("#result2").html(response);
+              },
+            });
+          }
+        });
+      });
+    </script>
+    <script src="jquery.min.js"></script>
+    <style>
+      body {
+        background: url(images/speed.webp);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      .btn {
+        background-color: rgb(165 108 178);
+      }
+      .formbox {
+        padding: 20px;
+        background-color: rgb(0 0 0 / 0.3);
+      }
+      .alter {
+        width: fit-content;
+        margin: auto;
+        border-radius: 5px;
+        background-color: #eee;
+        box-shadow: 0px 0px 25px 10px #2196f38c;
+      }
+      .button {
+        border-style: none;
+        border-radius: 5px;
+        transition: all 0.5s ease-in-out;
+        color: black;
+      }
+      .button.active {
+        background-color: rgb(165 108 178 /0.5);
+      }
+      form {
+        color: white;
+        display: none;
+        margin: 0;
+      }
+      form.active {
+        display: block;
+      }
+      input {
+        background: rgba(255, 255, 255, 0.35) !important;
+      }
+    </style>
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Header -->
+      <header id="header" class="alt">
+        <a href="index.php" class="logo"
+          ><strong>Car Rental</strong> <span>Website</span></a
+        >
+        <nav>
+          <a href="#menu">Menu</a>
+        </nav>
+      </header>
+
+      <!-- Header -->
+      <header id="header" class="alt">
+        <a href="index.php" class="logo"
+          ><strong>Car Rental</strong> <span>Website</span></a
+        >
+        <nav>
+          <a href="#menu">Menu</a>
+        </nav>
+      </header>
+
+      <!-- Menu -->
+      <nav id="menu">
+        <ul class="links">
+          <li class="active"><a href="index.php">Home </a></li>
+
+          <li><a href="car_list.php">Car Catalog</a></li>
+
+          <li><a href="logorsign.html">Login Or Register</a></li>
+
+          <li><a href="user_reservations.php">Reservations</a></li>
+
+          <li><a href="about-us.php">About Us</a></li>
+
+          <li><a href="contact.php">Contact Us</a></li>
+        </ul>
+      </nav>
+      <div class="container">
+        <div class="formbox">
+          <div class="alter d-flex">
+            <button
+              id="button1"
+              class="button active"
+              onclick="toggleForm('form1')"
+            >
+              Login
+            </button>
+            <button id="button2" class="button" onclick="toggleForm('form2')">
+              Sign Up
+            </button>
+          </div>
+          <form
+            action="login.php"
+            method="post"
+            name="form1"
+            id="form1"
+            class="active"
+            onsubmit="return validateForm1()"
+          >
+            <div class="mb-3 mt-4">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" id="email" name="email" class="form-control" />
+              <p id="emailError"></p>
+            </div>
+            <div class="mb-3 mt-4">
+              <label for="pass" class="form-label">Password</label>
+              <input
+                type="password"
+                id="pass"
+                name="pass"
+                class="form-control"
+              />
+              <p id="passwordError"></p>
+            </div>
+            <div
+              style="
+                color: white;
+                padding-top: 5px;
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+              "
+            >
+              <input
+                type="radio"
+                name="userType"
+                id="user"
+                value="user"
+                checked
+              />
+              <label for="user">User</label>
+              <input type="radio" name="userType" id="admin" value="admin" />
+              <label for="admin">Admin</label><br />
+            </div>
+            <input type="hidden" name="login" value="1" />
+            <input type="submit" class="btn" value="Login" id="login" />
+            <div id="result1" style="color: white; padding-top: 5px"></div>
+          </form>
+
+          <br />
+          <form
+            method="post"
+            action="login.php"
+            name="form2"
+            id="form2"
+            onsubmit="return validateForm2()"
+          >
+            <div class="mb-2">
+              <label for="fname" class="form-label">First Name</label>
+              <input type="text" id="fname" name="fname" class="form-control" />
+              <p id="fnameError"></p>
+            </div>
+            <div class="mb-2">
+              <label for="lname" class="form-label">Last Name</label>
+              <input type="text" id="lname" name="lname" class="form-control" />
+              <p id="lnameError"></p>
+            </div>
+            <div class="mb-2">
+              <label for="phone" class="form-label"
+                >Enter a phone number:</label
+              >
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Phone Number:11 digits"
+                pattern="[0-9]{11}"
+                class="form-control"
+                required
+              />
+              <p id="phoneError"></p>
+            </div>
+            <div class="mb-2">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" id="email" name="email" class="form-control" />
+              <p id="emailError2"></p>
+            </div>
+            <div class="mb-2">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="pass"
+                class="form-control"
+              />
+              <p id="passwordError2"></p>
+            </div>
+            <div class="mb-2">
+              <label for="conpassword" class="form-label"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                id="conpassword"
+                name="conpass"
+                class="form-control"
+              />
+              <p id="conpasswordError"></p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="col-md-4 mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select id="gender" name="gender" class="form-select">
+                  <option value="M" selected>Male</option>
+                  <option value="F">Female</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label for="birthday" class="form-label">Birthday:</label>
+                <input
+                  type="date"
+                  id="birthday"
+                  name="birthday"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <input type="hidden" name="signup" value="2" />
+            <input type="submit" value="Sign Up" id="signup" class="btn" />
+            <div id="result2" style="color: white; padding-top: 5px"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
